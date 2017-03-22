@@ -1,3 +1,7 @@
+"""
+    Monitor on real time the ticker information of all pairs given by btc-e
+"""
+
 import time
 import tkinter as tk
 from threading import Thread
@@ -61,6 +65,8 @@ def window_on_closing(root):
 
 
 def main():
+
+    # PLEASE DO NOT LEAVE YOUR KEY AND SECRET IN PLAIN TEXT ON YOUR CODE
     key = "here goes your key"
     secret = "here goes your secret"
 

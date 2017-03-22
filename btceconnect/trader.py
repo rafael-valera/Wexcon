@@ -1,4 +1,5 @@
 from btceconnect.request_handler import APIRequestHandler, APIResponseError
+from btceconnect.pair import Pair
 
 
 class Trader:
@@ -47,7 +48,7 @@ class Trader:
         dept_formatted_url = self._api_handler.PUBLIC_DEPTH_URL + '-'.join(pairs) + "?limit={}".format(limit)
         return self._api_handler.request_public_api(url=dept_formatted_url)
 
-    def ticker_public(self, *pairs):
+    def ticker_public(self):
         """
         This method provides all the information about currently active pairs, such as:
         the maximum price, the minimum price, average price, trade volume, trade volume in currency,
@@ -64,9 +65,9 @@ class Trader:
         sell: sell price.
         updated: last update of cache.
         """
-        # if not isinstance(pairs, list):
-        #     raise TypeError("pairs argument should be a list object")
-        dept_formatted_url = self._api_handler.PUBLIC_TICKER_URL + '-'.join(pairs)
+
+        dept_formatted_url = self._api_handler.PUBLIC_TICKER_URL + '-'.join(
+            Pair.get_available_pairs(self.public_info()))
         return self._api_handler.request_public_api(url=dept_formatted_url)
 
     def public_trades(self, pairs, limit=30):

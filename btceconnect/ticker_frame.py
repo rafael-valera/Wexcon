@@ -45,9 +45,6 @@ class TickerFrame(tk.Frame):
         for labels in key_value_labels:
             key_label, value_label = labels
 
-            # adds a highlighting feature to the label
-            # key_label.bind('<Button-1>', self.highlight)
-
             key_label.grid(row=grid[row], column=grid[column], sticky=tk.W)
             grid[column] = 1
             value_label.grid(row=grid[row], column=grid[column], sticky=tk.E)

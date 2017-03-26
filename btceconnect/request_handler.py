@@ -1,6 +1,5 @@
 import http.client
 import json
-import unittest
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -78,12 +77,3 @@ class APIRequestHandler:
             return parsed_json_data
         else:
             raise APIResponseError(error)
-
-
-class TestAPIRequestHandler(unittest.TestCase):
-    def setUp(self):
-        pass
-
-
-if __name__ == "__main__":
-    unittest.main()

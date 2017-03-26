@@ -27,5 +27,3 @@ NVCUSD = 'nvc_usd'
 NMCBTC = 'nmc_btc'
 DSHUSD = 'dsh_usd'
 
-
-DBPATH = "/home/rvalera/PycharmProjects/BTC-eAPI/toi/trades.db"

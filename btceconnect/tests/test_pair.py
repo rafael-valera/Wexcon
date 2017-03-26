@@ -84,3 +84,7 @@ class TestPair(unittest.TestCase):
         buy_price = self.btc_usd.ticker.buy
         expected_buy_price = 101.9
         self.assertEqual(expected_buy_price, buy_price)
+
+
+if __name__ == "__main__":
+    unittest.main()

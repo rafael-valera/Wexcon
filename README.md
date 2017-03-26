@@ -37,7 +37,7 @@ Create a Pair object to play your game:
     btc_usd = btce.Pair(pair_name=btce.BTCUSD, public_info_response=public_info, ticker_response=ticker_info)
 
     btc_usd_fee = btc_usd.info.fee
-    btc_usd_decimal_places = btc_usd.info.fee
+    btc_usd_decimal_places = btc_usd.info.decimal_places
 
     btc_usd_buy_price = btc_usd.ticker.buy
     btc_usd_buy_avg = btc_usd.ticker.avg
@@ -57,7 +57,7 @@ Ticker GUI
     Place your API key/secret in main() function and run it.
 
 
-
+Please feel free to let me know what you think... It would be a lot of help!
 
 
 

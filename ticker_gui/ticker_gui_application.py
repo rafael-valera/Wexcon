@@ -7,7 +7,7 @@ import tkinter as tk
 from threading import Thread
 from tkinter import messagebox
 from btceconnect import Trader
-from btceconnect import TickerFrame
+from .ticker_frame import TickerFrame
 
 global updating
 updating = True

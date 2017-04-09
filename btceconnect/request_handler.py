@@ -37,9 +37,9 @@ class APIRequestHandler:
     def __repr__(self):
         return "({})".format(self.__class__.__name__)
 
-    def _sign(self, params):
+    def _sign(self, params, secret):
         """Sings btc-e api secret key to authenticate to BTC-e API"""
-        parameters = hmac.new(key=self._SECRET.encode(), digestmod=hashlib.sha512)
+        parameters = hmac.new(key=secret.encode(), digestmod=hashlib.sha512)
         parameters.update(params.encode("utf-8"))
         sign = parameters.hexdigest()
         return sign
@@ -52,7 +52,8 @@ class APIRequestHandler:
         """Sends a http POST request to the btc-e trade api and returns back response in dictionary format.
             If there is an 'error' key in the response an APIResponseError Exception will be raised."""
         params = urllib.parse.urlencode(params)
-        headers = {"Content-type": "application/x-www-form-urlencoded", "Key": self._KEY, "Sign": self._sign(params)}
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Key": self._KEY,
+                   "Sign": self._sign(params, self._SECRET)}
         connection = http.client.HTTPSConnection("btc-e.com", timeout=60)
         connection.request("POST", "/tapi", params, headers)
         parsed_json_data = APIRequestHandler._parse_json(connection.getresponse().read().decode())

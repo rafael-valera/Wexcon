@@ -22,6 +22,7 @@ Create a Account object to initialize your account information (funds, rights, t
 
     usd_balance = my_account.funds.usd
     trade_right = my_account.rights.trade
+    open_orders = my_account.info.open_orders
 
 Update your account the same way it was created:
 
@@ -41,6 +42,8 @@ Create a Pair object to play your game:
 
     btc_usd_buy_price = btc_usd.ticker.buy
     btc_usd_buy_avg = btc_usd.ticker.avg
+
+    using the static method get_available_pairs(public_info) you can retrieve a list of the current available pairs
 
 Update the trading Pair object:
 

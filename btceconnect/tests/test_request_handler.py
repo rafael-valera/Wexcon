@@ -31,6 +31,11 @@ class TestRequestHandler(unittest.TestCase):
         exception_message = error.exception._api_message
         self.assertEqual(expected_exception_message, exception_message)
 
+    def test_request_public_api_checkForSuccessfulRequest(self):
+        url = "https://btc-e.com/api/3/ticker/btc_usd"
+        response = self.handler.request_public_api(url)
+        self.assertIsInstance(response, dict)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -46,7 +46,10 @@ class APIRequestHandler:
 
     @staticmethod
     def _parse_json(json_data):
-        return json.loads(json_data)
+        try:
+            return json.loads(json_data)
+        except json.JSONDecodeError as error:
+            raise APIResponseError(error)
 
     def request_trade_api(self, params):
         """Sends a http POST request to the btc-e trade api and returns back response in dictionary format.

@@ -35,17 +35,17 @@ class TestAccount(unittest.TestCase):
         self.assertEqual(expected_info_right, info_right)
 
     def test_update_account_openOrdersSetup(self):
-        open_orders = self.account.open_orders
+        open_orders = self.account.info.open_orders
         expected_open_orders = 18
         self.assertEqual(expected_open_orders, open_orders)
 
     def test_update_account_transactionCount(self):
-        transactions = self.account.transaction_count
+        transactions = self.account.info.transaction_count
         expected_transactions = 15
         self.assertEqual(expected_transactions, transactions)
 
     def test_update_account_serverTime(self):
-        time = self.account.server_time
+        time = self.account.info.server_time
         expected_time = 1342123547
         self.assertEqual(expected_time, time)
 

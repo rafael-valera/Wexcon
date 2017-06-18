@@ -1,4 +1,49 @@
-from collections import namedtuple
+class AccountRights:
+    """ Account rights """
+
+    def __init__(self, get_info_response):
+        self.account_data = get_info_response["return"]["rights"]
+
+    @property
+    def info(self):
+        return self.account_data.get("info")
+
+    @property
+    def trade(self):
+        return self.account_data.get("trade")
+
+    @property
+    def withdraw(self):
+        return self.account_data.get("withdraw")
+
+
+class AccountFunds:
+    """ Account funds """
+
+    def __init__(self, get_info_response):
+        funds = get_info_response["return"]["funds"]
+        expected = [coin for coin in funds.keys()]
+        for coin in expected:
+            self.__setattr__(coin, funds.get(coin))
+
+
+class AccountInfo:
+    """ Account's server time, open orders and transaction count """
+
+    def __init__(self, get_info_response):
+        self.info = get_info_response["return"]
+
+    @property
+    def open_orders(self):
+        return self.info.get("open_orders")
+
+    @property
+    def transaction_count(self):
+        return self.info.get("transaction_count")
+
+    @property
+    def server_time(self):
+        return self.info.get("server_time")
 
 
 class Account:
@@ -32,16 +77,12 @@ class Account:
     """
 
     def __init__(self, get_info_response):
-        self._Funds = namedtuple("Funds", [coin for coin in get_info_response["return"]["funds"].keys()])
-        self._Rights = namedtuple("Rights", [right for right in get_info_response["return"]["rights"].keys()])
-        self.update_account(get_info_response)
+        self.rights = AccountRights(get_info_response)
+        self.funds = AccountFunds(get_info_response)
+        self.info = AccountInfo(get_info_response)
 
     def update_account(self, get_info_response):
-        self.funds = self._Funds(**get_info_response["return"]["funds"])
-        self.rights = self._Rights(**get_info_response["return"]["rights"])
-        self.open_orders = get_info_response["return"]["open_orders"]
-        self.transaction_count = get_info_response["return"]["transaction_count"]
-        self.server_time = get_info_response["return"]["server_time"]
+        self.__init__(get_info_response)
 
     def __str__(self):
         return "({}. usd: {}, eur: {}, open orders: {})".format(self.__class__.__name__, self.funds.usd, self.funds.eur,

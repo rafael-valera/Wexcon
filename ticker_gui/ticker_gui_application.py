@@ -1,36 +1,45 @@
-"""
-    Monitor on real time the ticker information of all pairs given by btc-e
-"""
+""" Monitor on real time the ticker information of all pairs given by btc-e """
 
-import time
+import signal
+import os
 import tkinter as tk
-from threading import Thread
+import threading
 from tkinter import messagebox
+
 from btceconnect import Trader
 from ticker_frame import TickerFrame
 
-global updating
-updating = True
-
 
 class Tickers(tk.Frame):
-    def __init__(self, master, trader, refresh_rate=2):
+    """ Container frame of all available BTC-e trading pairs """
+
+    def __init__(self, master, trader, refresh_rate):
         super().__init__(master)
+        self.master = master
         self.trader = trader
+        self.timed_update_thread = None
         self.refresh_rate = refresh_rate
         self.ticker_frames = list()
-        self.config_widgets()
+        self._config_widgets()
         self.grid(sticky="NEWS")
+        self.master.protocol("WM_DELETE_WINDOW", self._on_close_window)
+        self.start_update_thread()
 
-    def update_frames(self):
-        global updating
-        while updating:
-            ticker_data = self.trader.ticker_public()
-            for ticker in self.ticker_frames:
-                ticker.update_values(ticker_data)
-            time.sleep(self.refresh_rate)
+    def start_update_thread(self):
+        """ Sets recursively a new thread to start the TickerFrame update procedure
+        according to the given 'refresh_rate' attribute """
+        self.timed_update_thread = threading.Timer(self.refresh_rate, self.start_update_thread)
+        self.timed_update_thread.start()
+        self.update_ticker_frames()
 
-    def config_widgets(self):
+    def update_ticker_frames(self):
+        """ Updates all ticker frames objects in the 'ticker_frames' list """
+        ticker_data = self.trader.ticker_public()
+        for ticker in self.ticker_frames:
+            ticker.update_values(ticker_data)
+
+    def _config_widgets(self):
+        """ Instanciate a TickerFrame for every Btc-e available pair and lays them out """
         ticker_data = self.trader.ticker_public()
         for pair_name, pair_ticker in sorted(ticker_data.items()):
             self.ticker_frames.append(TickerFrame(self, pair_name, pair_ticker))
@@ -40,7 +49,7 @@ class Tickers(tk.Frame):
         grid = [1, 0]
 
         max_num_columns = 10
-        track = []  #
+        track = []
 
         # tries to set an even number of columns in case trading pairs are added or removed
         while len(self.ticker_frames) % max_num_columns:
@@ -56,31 +65,28 @@ class Tickers(tk.Frame):
                 grid[column] = 0
                 grid[row] += 1
 
-
-def window_on_closing(root):
-    global updating
-    if messagebox.askokcancel("Quit", "Do you want to quit?"):
-        updating = False
-        root.destroy()
+    def _on_close_window(self):
+        """ Cancels running child threads and destroys window """
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            try:
+                self.timed_update_thread.cancel()
+            except AttributeError:
+                messagebox.showwarning("Error", "Update thread could not be killed")
+                stop = messagebox.askyesnocancel("Quit", "Do you want to force the application to close?")
+                if stop:
+                    os.kill(pid=os.getpid(), sig=signal.SIGKILL)
+            else:
+                self.master.destroy()
 
 
 def main():
-
-    # PLEASE DO NOT LEAVE YOUR KEY AND SECRET IN PLAIN TEXT ON YOUR CODE
-    key = "here goes your key"
-    secret = "here goes your secret"
-
+    key = ""
+    secret = ""
+    refresh_rate = 2
     root = tk.Tk()
-    root.title("BTC-e Ticker Information")
-    root.protocol("WM_DELETE_WINDOW", lambda: window_on_closing(root))
-
+    root.title("BTC-e Ticker ")
     trader = Trader(key, secret)
-
-    application = Tickers(root, trader)
-
-    update_thread = Thread(target=application.update_frames)
-    update_thread.start()
-
+    application = Tickers(root, trader, refresh_rate)
     application.mainloop()
 
 

@@ -1,5 +1,5 @@
 """ Monitor on real time the ticker information of all pairs given by btc-e """
-
+import platform
 import signal
 import os
 import tkinter as tk
@@ -73,8 +73,11 @@ class Tickers(tk.Frame):
             except AttributeError:
                 messagebox.showwarning("Error", "Update thread could not be killed")
                 stop = messagebox.askyesnocancel("Quit", "Do you want to force the application to close?")
-                if stop:
-                    os.kill(pid=os.getpid(), sig=signal.SIGKILL)
+                if stop and platform == "win32":
+                    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+                elif platform.system() == "linux":
+                    os.kill(os.getpid(), signal.SIGKILL)
+                self.master.destroy()
             else:
                 self.master.destroy()
 
@@ -82,6 +85,7 @@ class Tickers(tk.Frame):
 def main():
     key = ""
     secret = ""
+
     refresh_rate = 2
     root = tk.Tk()
     root.title("BTC-e Ticker ")

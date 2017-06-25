@@ -1,4 +1,6 @@
 import tkinter as tk
+import threading
+import time
 
 
 class TickerFrame(tk.Frame):
@@ -8,6 +10,8 @@ class TickerFrame(tk.Frame):
     RED = "red"
     BLACK = "black"
     number_format = "{0:.5f}"
+    HIGHLIGHT_COLOR = "#e24a28"
+    HIGHLIGHT_TIME = 0.7
 
     def __init__(self, master, pair_name, pair_ticker):
         super().__init__(master)
@@ -56,6 +60,13 @@ class TickerFrame(tk.Frame):
 
         ticker_frame.grid()
 
+    @classmethod
+    def _highlight_label(cls, label_widget):
+        """ Briefly highlights value label if ticker value changes """
+        label_widget.configure(fg=cls.HIGHLIGHT_COLOR)
+        time.sleep(cls.HIGHLIGHT_TIME)
+        label_widget.configure(fg=cls.BLACK)
+
     def update_values(self, ticker):
         """Updates all pair fields with give ticker info"""
         try:
@@ -66,4 +77,8 @@ class TickerFrame(tk.Frame):
             for label_name, label_widget in frame.children.items():
                 if label_name.endswith("_value"):
                     ticker_field = label_name.split("_")[2]
-                    label_widget.configure(text=number_format.format(ticker[self.name][ticker_field]))
+                    current_value = float(label_widget["text"])
+                    new_value = float(self.number_format.format(ticker[self.name][ticker_field]))
+                    if not current_value == new_value:
+                        label_widget.configure(text=self.number_format.format(new_value))
+                        threading.Thread(target=self._highlight_label, args=(label_widget,)).start()

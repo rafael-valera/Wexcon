@@ -66,4 +66,4 @@ class TickerFrame(tk.Frame):
             for label_name, label_widget in frame.children.items():
                 if label_name.endswith("_value"):
                     ticker_field = label_name.split("_")[2]
-                    label_widget.configure(text=number_format.format(ticker[self.name][ticker_field]))
+                    label_widget.configure(text=self.number_format.format(ticker[self.name][ticker_field]))

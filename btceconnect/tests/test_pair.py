@@ -81,9 +81,18 @@ class TestPair(unittest.TestCase):
 
     def test_updatePair_checkTicker(self):
         self.btc_usd.update_pair(self.info, self.ticker)
-        buy_price = self.btc_usd.ticker.buy
         expected_buy_price = 101.9
-        self.assertEqual(expected_buy_price, buy_price)
+        self.assertEqual(expected_buy_price, self.btc_usd.ticker.buy)
+
+    def test_TickerAvgAmount(self):
+        self.btc_usd.update_pair(self.info, self.ticker)
+        expected_avg_amount = 100.51
+        self.assertEqual(expected_avg_amount, self.btc_usd.ticker.avg)
+
+    def test_PublicInfoFeeAmount(self):
+        self.btc_usd.update_pair(self.info, self.ticker)
+        expected_fee = 0.2
+        self.assertEqual(expected_fee, self.btc_usd.info.fee)
 
 
 if __name__ == "__main__":

@@ -86,8 +86,7 @@ class Account:
 
     def __str__(self):
         return "({}. usd: {}, eur: {}, open orders: {})".format(self.__class__.__name__, self.funds.usd, self.funds.eur,
-                                                                self.open_orders)
+                                                                self.info.open_orders)
 
     def __repr__(self):
-        return "({}. usd: {}, eur: {}, open orders: {})".format(self.__class__.__name__, self.funds.usd, self.funds.eur,
-                                                                self.open_orders)
+        return self.__str__()

@@ -22,10 +22,10 @@ class APIResponseError(Exception):
 class APIRequestHandler:
     """Manages all http POST and GET requests to the BTC-e API"""
     # BTC-e URLs:
-    PUBLIC_INFO_URL = "https://btc-e.com/api/3/info"
-    PUBLIC_TICKER_URL = "https://btc-e.com/api/3/ticker/"
-    PUBLIC_DEPTH_URL = "https://btc-e.com/api/3/depth/"
-    PUBLIC_TRADES_URL = "https://btc-e.com/api/3/trades/"
+    PUBLIC_INFO_URL = "https://wex.nz/api/3/info"
+    PUBLIC_TICKER_URL = "https://wex.nz/api/3/ticker/"
+    PUBLIC_DEPTH_URL = "https://wex.nz/api/3/depth/"
+    PUBLIC_TRADES_URL = "https://wex.nz/api/3/trades/"
 
     def __init__(self, secret, key):
         self._KEY = key
@@ -57,9 +57,9 @@ class APIRequestHandler:
         params = urllib.parse.urlencode(params)
         headers = {"Content-type": "application/x-www-form-urlencoded", "Key": self._KEY,
                    "Sign": self._sign(params, self._SECRET)}
-        connection = http.client.HTTPSConnection("btc-e.com", timeout=60)
+        connection = http.client.HTTPSConnection("wex.nz", timeout=60)
         connection.request("POST", "/tapi", params, headers)
-        parsed_json_data = APIRequestHandler._parse_json(connection.getresponse().read().decode())
+        parsed_json_data = APIRequestHandler._parse_json(connection.getresponse().read())
         try:
             error = parsed_json_data["error"]
         except KeyError:

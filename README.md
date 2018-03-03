@@ -1,24 +1,24 @@
-Python API to connect to your btc-e account through the btc-e API and structure your account information
+Python API to connect to your WEX account through the WEX API and structure your account information
 so you can focus only developing your trading stragegy.
 
 It's purely written in Python3, no external libraries required.
 
 Installation:
 
-    pip install git+https://github.com/rafael-valera/btceconnect
+    pip install git+https://github.com/rafael-valera/wexcon
 
 Usage:
 
-    import btceconnect as btce
+    import wexcon
 
-Create a Trader object to query de BTC-e public and trade API
+Create a Trader object to query de WEX public and trade API
 
-    trader = btce.Trader(KEY, SECRET)
+    trader = wexcon.Trader(KEY, SECRET)
 
 Create a Account object to initialize your account information (funds, rights, transaction count, etc)
 
     get_info = trader.get_info()
-    my_account = btce.Account(get_info_response=get_info)
+    my_account = wexcon.Account(get_info_response=get_info)
 
     usd_balance = my_account.funds.usd
     trade_right = my_account.rights.trade
@@ -35,7 +35,7 @@ Create a Pair object to play your game:
     public_info = trader.puclic_info()
     ticker_info = trader.ticker_public()
 
-    btc_usd = btce.Pair(pair_name=btce.BTCUSD, public_info_response=public_info, ticker_response=ticker_info)
+    btc_usd = wexcon.Pair(pair_name=wexcon.BTCUSD, public_info_response=public_info, ticker_response=ticker_info)
 
     btc_usd_fee = btc_usd.info.fee
     btc_usd_decimal_places = btc_usd.info.decimal_places

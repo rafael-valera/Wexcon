@@ -1,5 +1,5 @@
 class Ticker:
-    """ BTC-e Ticker Data """
+    """ WEX Ticker Data """
 
     def __init__(self, pair_name, ticker_response):
         self.name = pair_name
@@ -12,7 +12,7 @@ class Ticker:
 
 
 class PublicInfo:
-    """ BTC-e trading public information """
+    """ WEX trading public information """
 
     def __init__(self, pair_name, public_info):
         self.name = pair_name
@@ -34,7 +34,7 @@ class PairNotFoundError(Exception):
 
 
 class Pair:
-    """ Creates BTC-e api Pair data model from the public api methods:
+    """ Creates WEX api Pair data model from the public api methods:
      info and ticker"""
 
     def __init__(self, pair_name, public_info_response, ticker_response):
@@ -48,7 +48,7 @@ class Pair:
     @staticmethod
     def get_available_pairs(public_info):
         """ Returns a list of the current available pairs. It can 
-        be that for determinated reason, BTC-e API remove removes
+        be that for determinated reason, WEX API remove removes
         an offered trading pair. """
         return [pair for pair in public_info["pairs"].keys()]
 

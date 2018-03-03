@@ -1,6 +1,6 @@
 import unittest
 
-from btceconnect.pair import Pair
+from wexcon.pair import Pair
 
 
 class TestPair(unittest.TestCase):

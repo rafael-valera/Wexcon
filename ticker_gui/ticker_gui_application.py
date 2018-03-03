@@ -1,17 +1,18 @@
-""" Monitor on real time the ticker information of all pairs given by btc-e """
+""" Monitor on real time the ticker information of all pairs given by WEX """
 
-import signal
 import os
-import tkinter as tk
+import signal
 import threading
+import tkinter as tk
 from tkinter import messagebox
 
-from btceconnect import Trader
 from ticker_frame import TickerFrame
+
+from wexcon import Trader
 
 
 class Tickers(tk.Frame):
-    """ Container frame of all available BTC-e trading pairs """
+    """ Container frame of all available WEX trading pairs """
 
     def __init__(self, master, trader, refresh_rate):
         super().__init__(master)
@@ -39,7 +40,7 @@ class Tickers(tk.Frame):
             ticker.update_values(ticker_data)
 
     def _config_widgets(self):
-        """ Instanciate a TickerFrame for every Btc-e available pair and lays them out """
+        """ Instanciate a TickerFrame for every WEX available pair and lays them out """
         ticker_data = self.trader.ticker_public()
         for pair_name, pair_ticker in sorted(ticker_data.items()):
             self.ticker_frames.append(TickerFrame(self, pair_name, pair_ticker))
@@ -84,7 +85,7 @@ def main():
     secret = ""
     refresh_rate = 2
     root = tk.Tk()
-    root.title("BTC-e Ticker ")
+    root.title("WEX Ticker ")
     trader = Trader(key, secret)
     application = Tickers(root, trader, refresh_rate)
     application.mainloop()

@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 class TickerFrame(tk.Frame):
-    """ Basic frame with BTC-e ticker attributes """
+    """ Basic frame with WEX ticker attributes """
     ticker_fields = ["buy", "sell", "last", "low", "high", "avg", "vol", "vol_cur", "updated"]
     TICKER_FONT = ('Verdana', 7, "bold")
     RED = "red"

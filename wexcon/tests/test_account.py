@@ -1,6 +1,6 @@
 import unittest
 
-from btceconnect.account import Account
+from wexcon.account import Account
 
 
 class TestAccount(unittest.TestCase):

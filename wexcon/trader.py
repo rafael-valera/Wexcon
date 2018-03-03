@@ -1,10 +1,10 @@
-from btceconnect.request_handler import APIRequestHandler, APIResponseError
-from btceconnect.pair import Pair
+from wexcon.pair import Pair
+from wexcon.request_handler import APIRequestHandler, APIResponseError
 
 
 class Trader:
     """
-    API to query BTC-e server for public data and all common trading transactions
+    API to query WEX server for public data and all common trading transactions
     """
 
     def __init__(self, key, secret):

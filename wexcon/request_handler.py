@@ -1,15 +1,14 @@
+import hashlib
+import hmac
 import http.client
 import json
 import urllib.error
 import urllib.parse
 import urllib.request
 
-import hashlib
-import hmac
-
 
 class APIResponseError(Exception):
-    """APIResponseError will be raised when BTC-e API returns a json response with a key named 'error'"""
+    """APIResponseError will be raised when WEX API returns a json response with a key named 'error'"""
 
     def __init__(self, *args, **kwargs):
         self._api_message = args[0]
@@ -20,8 +19,8 @@ class APIResponseError(Exception):
 
 
 class APIRequestHandler:
-    """Manages all http POST and GET requests to the BTC-e API"""
-    # BTC-e URLs:
+    """Manages all http POST and GET requests to the WEX API"""
+    # WEX URLs:
     PUBLIC_INFO_URL = "https://wex.nz/api/3/info"
     PUBLIC_TICKER_URL = "https://wex.nz/api/3/ticker/"
     PUBLIC_DEPTH_URL = "https://wex.nz/api/3/depth/"
@@ -38,7 +37,7 @@ class APIRequestHandler:
         return "({})".format(self.__class__.__name__)
 
     def _sign(self, params, secret):
-        """Sings btc-e api secret key to authenticate to BTC-e API"""
+        """Sings WEX api secret key to authenticate to WEX API"""
         parameters = hmac.new(key=secret.encode(), digestmod=hashlib.sha512)
         parameters.update(params.encode("utf-8"))
         sign = parameters.hexdigest()
@@ -52,7 +51,7 @@ class APIRequestHandler:
             raise APIResponseError(error)
 
     def request_trade_api(self, params):
-        """Sends a http POST request to the btc-e trade api and returns back response in dictionary format.
+        """Sends a http POST request to the WEX trade api and returns back response in dictionary format.
             If there is an 'error' key in the response an APIResponseError Exception will be raised."""
         params = urllib.parse.urlencode(params)
         headers = {"Content-type": "application/x-www-form-urlencoded", "Key": self._KEY,
@@ -69,7 +68,7 @@ class APIRequestHandler:
 
     @staticmethod
     def request_public_api(url):
-        """Sends a http GET request to the btc-e public api and returns back response in dictionary format.
+        """Sends a http GET request to the WEX public api and returns back response in dictionary format.
             If there is an 'error' key in the response an APIResponseError Exception will be raised."""
         response = urllib.request.urlopen(url=url)
         response = response.read()

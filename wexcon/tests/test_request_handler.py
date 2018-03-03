@@ -1,6 +1,7 @@
 import unittest
-from btceconnect.request_handler import APIRequestHandler
-from btceconnect.request_handler import APIResponseError
+
+from wexcon.request_handler import APIRequestHandler
+from wexcon.request_handler import APIResponseError
 
 
 class TestRequestHandler(unittest.TestCase):
@@ -24,7 +25,7 @@ class TestRequestHandler(unittest.TestCase):
             self.handler.request_trade_api(params=params)
 
     def test_request_public_api_raiseAPIResponseErrorWithBadURL(self):
-        bad_url = "https://btc-e.com/api/3/ticker/btc_usd-btc7"
+        bad_url = "https://wex.nz/api/3/ticker/btc_usd-btc7"
         expected_exception_message = 'Invalid pair name: btc7'
         with self.assertRaises(APIResponseError) as error:
             self.handler.request_public_api(bad_url)
@@ -32,7 +33,7 @@ class TestRequestHandler(unittest.TestCase):
         self.assertEqual(expected_exception_message, exception_message)
 
     def test_request_public_api_checkForSuccessfulRequest(self):
-        url = "https://btc-e.com/api/3/ticker/btc_usd"
+        url = "https://wex.nz/api/3/ticker/btc_usd"
         response = self.handler.request_public_api(url)
         self.assertIsInstance(response, dict)
 
